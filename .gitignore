@@ -9,7 +9,6 @@ target
 /.settings
 /RUNNING_PID
 
-
 # Created by https://www.gitignore.io/api/sbt,scala,playframework
 
 ### PlayFramework ###
