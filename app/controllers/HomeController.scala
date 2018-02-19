@@ -31,4 +31,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     
     Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
   }
+  
+  def phone(phoneNumber: String) = Action {
+    Ok(phoneNumber)
+  }
+  
+  def todo = TODO
 }

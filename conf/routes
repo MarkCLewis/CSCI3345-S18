@@ -15,3 +15,9 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET		/plot						controllers.HomeController.plot
 
 GET		/temp						controllers.TempController.welcome
+
+# Demonstrate a regular expression for a route
+GET		/phone/$phone<\d{3}-\d{3}-\d{4}>	controllers.HomeController.phone(phone)
+
+# Demonstrate TODO for a route
+GET		/todo						controllers.HomeController.todo
