@@ -1,0 +1,29 @@
+@* tempTable Template File *@
+@(tempData: Seq[DailyTemp], month: Int, year: Int)(implicit request: RequestHeader)
+
+@main(s"Temp Table: $month/$year") {
+  <h2>Table for @month/@year</h2>
+  <table border="1">
+  	<tr>
+  	  <th>Month</th>
+  	  <th>Day</th>
+  	  <th>Year</th>
+  	  <th>Precip</th>
+  	  <th>Average</th>
+  	  <th>High</th>
+  	  <th>Low</th>
+  	</tr>
+  	@for(dt <- tempData) {
+  	  <tr>
+  	    <td>@dt.month</td>
+  	    <td>@dt.day</td>
+  	    <td>@dt.year</td>
+  	    <td>@dt.precip</td>
+  	    <td>@dt.tave</td>
+  	    <td>@dt.tmax</td>
+  	    <td>@dt.tmin</td>
+  	  </tr>
+  	}
+  </table>
+  <p>Back to <a href="">Main Page</a>.</p>
+}

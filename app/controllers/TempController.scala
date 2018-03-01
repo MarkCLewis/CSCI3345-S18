@@ -10,18 +10,24 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class TempController @Inject() (cc: ControllerComponents) extends AbstractController(cc) {
   val td = new models.TempData("data/SanAntonioTemps.csv")
 
-  def welcome = Action { request =>
+  def welcome = Action { implicit request =>
     println(request.session)
     Ok(views.html.tempWelcome("<b>HI!</b>")).withSession("userid" -> "Mark")
   }
 
-  def tempTable() = Action {
-    val month = 2
-    val year = 1962
-    Ok("Requested table " + month + "/" + year)
+  def tempTable() = Action { implicit request =>
+    request.body.asFormUrlEncoded match {
+      case Some(formData) =>
+        val month = formData("month").head.toInt
+        val year = formData("year").head.toInt
+        val data = td.getMonth(month, year)
+    	  Ok(views.html.tempTable(data, month, year))
+      case None =>
+        Redirect(routes.TempController.welcome)
+    }
   }
 
-  def tempPlot(month: Int, year: Int) = Action.async {
+  def tempPlot(month: Int, year: Int) = Action.async { implicit request =>
     Future {
       Ok("Requested plot " + month + "/" + year)
     }

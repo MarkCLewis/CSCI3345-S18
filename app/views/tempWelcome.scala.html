@@ -1,5 +1,5 @@
 @* tempWelcome Template File *@
-@(msg: String)
+@(msg: String)(implicit request: RequestHeader)
 
 @main("Temperatures") {
 	<h2>Temperature Data</h2>
@@ -7,6 +7,7 @@
 	<p>The message of the day is: @msg</p>
 	
 	<form id="table-form" action="@routes.TempController.tempTable()" method="POST">
+	  @views.html.helper.CSRF.formField
 	  Month:<input type="text" name="month">
 	  Year:<input type="text" name="year">
 	  <input type="submit" value="Submit">
