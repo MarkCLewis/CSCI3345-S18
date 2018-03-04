@@ -13,7 +13,6 @@ import swiftvis2.plotting.styles.ScatterStyle
 import swiftvis2.plotting.styles.ScatterStyle.LineData
 import swiftvis2.plotting.renderer.Renderer.StrokeData
 
-
 case class TempRange(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
 
 @Singleton
@@ -44,31 +43,28 @@ class TempController @Inject() (cc: MessagesControllerComponents) extends Messag
   }
 
   def tempPlotPage() = Action { implicit request =>
-      tempRangeForm.bindFromRequest().fold(
-          formWithErrors => BadRequest,
-          tempRange => 
-            Ok(views.html.tempPlot(tempRange)))
+    tempRangeForm.bindFromRequest().fold(
+      formWithErrors => BadRequest(views.html.tempWelcome("Oops", formWithErrors)),
+      tempRange => Ok(views.html.tempPlot(tempRange)))
   }
-  
+
   def tempPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int) = Action {
     val data = td.getRange(startMonth, startYear, endMonth, endYear)
-    val date = data.map(dt => dt.doy/365.0+dt.year)
+    val date = data.map(dt => dt.doy / 365.0 + dt.year)
     val plot = Plot.stackedNN(Seq(
-        ScatterStyle(date, data.map(_.tmax), symbolWidth = 3, symbolHeight = 3, colors = RedARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
-        ScatterStyle(date, data.map(_.tave), symbolWidth = 3, symbolHeight = 3, colors = BlackARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
-        ScatterStyle(date, data.map(_.tmin), symbolWidth = 3, symbolHeight = 3, colors = GreenARGB, lines = Some(LineData(1, StrokeData(1, Nil))))
-        ), "Temperatures", "Year", "Temp (F)").updatedNumericAxis("Main", "x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
-    
+      ScatterStyle(date, data.map(_.tmax), symbolWidth = 3, symbolHeight = 3, colors = RedARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
+      ScatterStyle(date, data.map(_.tave), symbolWidth = 3, symbolHeight = 3, colors = BlackARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
+      ScatterStyle(date, data.map(_.tmin), symbolWidth = 3, symbolHeight = 3, colors = GreenARGB, lines = Some(LineData(1, StrokeData(1, Nil))))), "Temperatures", "Year", "Temp (F)").updatedNumericAxis("Main", "x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+
     Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
   }
 
   def precipPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int) = Action {
     val data = td.getRange(startMonth, startYear, endMonth, endYear)
-    val date = data.map(dt => dt.doy/365.0+dt.year)
+    val date = data.map(dt => dt.doy / 365.0 + dt.year)
     val plot = Plot.stackedNN(Seq(
-        ScatterStyle(date, data.map(_.precip), symbolWidth = 3, symbolHeight = 3, colors = BlueARGB, lines = Some(LineData(1, StrokeData(1, Nil))))
-        ), "Precipitation", "Year", "Precipiation (in)").updatedNumericAxis("Main", "x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
-    
+      ScatterStyle(date, data.map(_.precip), symbolWidth = 3, symbolHeight = 3, colors = BlueARGB, lines = Some(LineData(1, StrokeData(1, Nil))))), "Precipitation", "Year", "Precipiation (in)").updatedNumericAxis("Main", "x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+
     Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
   }
 }
