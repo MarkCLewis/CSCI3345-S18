@@ -14,13 +14,16 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET		/plot						controllers.HomeController.plot
 
-GET		/temp						controllers.TempController.welcome
 
 # Demonstrate a regular expression for a route
 GET		/phone/$phone<\d{3}-\d{3}-\d{4}>	controllers.HomeController.phone(phone)
 
 # Demonstrate TODO for a route
 GET		/todo						controllers.HomeController.todo
+
+######### Routes for the temperature data code ###########
+
+GET		/temp						controllers.TempController.welcome
 
 POST	/temp						controllers.TempController.tempTable
 
@@ -29,3 +32,9 @@ POST	/tempplot					controllers.TempController.tempPlotPage
 GET		/tempplot/temps				controllers.TempController.tempPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
 
 GET		/tempplot/precip			controllers.TempController.precipPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
+
+######### Routes for the WebSocket chatting code ###########
+
+GET		/wschat						controllers.WSChatController.index
+
+GET		/socket						controllers.WSChatController.socket
