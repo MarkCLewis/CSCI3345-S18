@@ -24,4 +24,8 @@ GET		/todo						controllers.HomeController.todo
 
 POST	/temp						controllers.TempController.tempTable
 
-POST	/tempplot					controllers.TempController.tempPlot
+POST	/tempplot					controllers.TempController.tempPlotPage
+
+GET		/tempplot/temps				controllers.TempController.tempPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
+
+GET		/tempplot/precip			controllers.TempController.precipPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)

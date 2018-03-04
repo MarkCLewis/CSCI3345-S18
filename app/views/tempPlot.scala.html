@@ -1,0 +1,8 @@
+@* tempPlot Template File *@
+@(tempRange: TempRange)(implicit request: RequestHeader)
+
+@main(s"Plots for ${tempRange.startMonth}/${tempRange.startYear} to ${tempRange.endMonth}/${tempRange.endYear}") {
+  <h2>Data for @{tempRange.startMonth}/@{tempRange.startYear} to @{tempRange.endMonth}/@{tempRange.endYear}</h2>
+  <img src="@routes.TempController.tempPlot(tempRange.startMonth, tempRange.startYear, tempRange.endMonth, tempRange.endYear)" width="800" height="600"/>
+  <img src="@routes.TempController.precipPlot(tempRange.startMonth, tempRange.startYear, tempRange.endMonth, tempRange.endYear)" width="800" height="600"/>
+} 

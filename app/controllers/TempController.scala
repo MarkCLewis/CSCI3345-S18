@@ -1,18 +1,23 @@
 package controllers
 
-import play.api.mvc.AbstractController
-import play.api.mvc.ControllerComponents
-import javax.inject._
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-import play.api.data._
-import play.api.data.Forms._
-import play.api.data.validation.Constraints._
+import javax.inject.Inject
+import javax.inject.Singleton
+import play.api.data.Form
+import play.api.data.Forms.mapping
+import play.api.data.Forms.number
+import play.api.mvc.MessagesAbstractController
+import play.api.mvc.MessagesControllerComponents
+import swiftvis2.plotting._
+import swiftvis2.plotting.renderer.SVGRenderer
+import swiftvis2.plotting.styles.ScatterStyle
+import swiftvis2.plotting.styles.ScatterStyle.LineData
+import swiftvis2.plotting.renderer.Renderer.StrokeData
+
 
 case class TempRange(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
 
 @Singleton
-class TempController @Inject() (cc: ControllerComponents) extends AbstractController(cc) {
+class TempController @Inject() (cc: MessagesControllerComponents) extends MessagesAbstractController(cc) {
   val td = new models.TempData("data/SanAntonioTemps.csv")
 
   val tempRangeForm = Form(mapping(
@@ -23,7 +28,7 @@ class TempController @Inject() (cc: ControllerComponents) extends AbstractContro
 
   def welcome = Action { implicit request =>
     println(request.session)
-    Ok(views.html.tempWelcome("<b>HI!</b>")).withSession("userid" -> "Mark")
+    Ok(views.html.tempWelcome("<b>HI!</b>", tempRangeForm)).withSession("userid" -> "Mark")
   }
 
   def tempTable() = Action { implicit request =>
@@ -38,13 +43,32 @@ class TempController @Inject() (cc: ControllerComponents) extends AbstractContro
     }
   }
 
-  def tempPlot = Action.async { implicit request =>
-    Future {
+  def tempPlotPage() = Action { implicit request =>
       tempRangeForm.bindFromRequest().fold(
           formWithErrors => BadRequest,
           tempRange => 
-            Ok("Requested plot " + tempRange))
-    }
+            Ok(views.html.tempPlot(tempRange)))
+  }
+  
+  def tempPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int) = Action {
+    val data = td.getRange(startMonth, startYear, endMonth, endYear)
+    val date = data.map(dt => dt.doy/365.0+dt.year)
+    val plot = Plot.stackedNN(Seq(
+        ScatterStyle(date, data.map(_.tmax), symbolWidth = 3, symbolHeight = 3, colors = RedARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
+        ScatterStyle(date, data.map(_.tave), symbolWidth = 3, symbolHeight = 3, colors = BlackARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
+        ScatterStyle(date, data.map(_.tmin), symbolWidth = 3, symbolHeight = 3, colors = GreenARGB, lines = Some(LineData(1, StrokeData(1, Nil))))
+        ), "Temperatures", "Year", "Temp (F)").updatedNumericAxis("Main", "x", a => a.copy(tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+    
+    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
   }
 
+  def precipPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int) = Action {
+    val data = td.getRange(startMonth, startYear, endMonth, endYear)
+    val date = data.map(dt => dt.doy/365.0+dt.year)
+    val plot = Plot.stackedNN(Seq(
+        ScatterStyle(date, data.map(_.precip), symbolWidth = 3, symbolHeight = 3, colors = BlueARGB, lines = Some(LineData(1, StrokeData(1, Nil))))
+        ), "Precipitation", "Year", "Precipiation (in)").updatedNumericAxis("Main", "x", a => a.copy(tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+    
+    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
+  }
 }

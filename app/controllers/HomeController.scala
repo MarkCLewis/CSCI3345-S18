@@ -2,11 +2,8 @@ package controllers
 
 import javax.inject._
 import play.api.mvc._
-import java.io.ByteArrayOutputStream
 import swiftvis2.plotting.renderer.SVGRenderer
-import java.io.PrintStream
 import swiftvis2.plotting.Plot
-import swiftvis2.plotting.Bounds
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the

@@ -1,5 +1,5 @@
 @* tempWelcome Template File *@
-@(msg: String)(implicit request: RequestHeader)
+@(msg: String, tempRangeForm: Form[TempRange])(implicit request: MessagesRequestHeader)
 
 @main("Temperatures") {
 	<h2>Temperature Data</h2>
@@ -7,13 +7,20 @@
 	<p>The message of the day is: @msg</p>
 	
 	<form id="table-form" action="@routes.TempController.tempTable()" method="POST">
-	  @views.html.helper.CSRF.formField
+	  @helper.CSRF.formField
 	  Month:<input type="text" name="month">
 	  Year:<input type="text" name="year">
 	  <input type="submit" value="Submit">
 	</form>
 	
-	<img src="@routes.HomeController.plot()" width="800" height="600"/>
+	@helper.form(action = helper.CSRF(routes.TempController.tempPlotPage())) {
+	  @helper.inputText(tempRangeForm("startMonth"))
+	  @helper.inputText(tempRangeForm("startYear"))
+	  @helper.inputText(tempRangeForm("endMonth"))
+	  @helper.inputText(tempRangeForm("endYear"))
+	  <input type="submit" value="Submit">
+	}
+	
 	@* This is a Twirl comment. We want to add 1 and 2.  *@
 	@defining(1+2) { sum =>
 	  <p>The sum is @sum.</p>
