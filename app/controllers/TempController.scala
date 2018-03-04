@@ -57,7 +57,7 @@ class TempController @Inject() (cc: MessagesControllerComponents) extends Messag
         ScatterStyle(date, data.map(_.tmax), symbolWidth = 3, symbolHeight = 3, colors = RedARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
         ScatterStyle(date, data.map(_.tave), symbolWidth = 3, symbolHeight = 3, colors = BlackARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
         ScatterStyle(date, data.map(_.tmin), symbolWidth = 3, symbolHeight = 3, colors = GreenARGB, lines = Some(LineData(1, StrokeData(1, Nil))))
-        ), "Temperatures", "Year", "Temp (F)").updatedNumericAxis("Main", "x", a => a.copy(tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+        ), "Temperatures", "Year", "Temp (F)").updatedNumericAxis("Main", "x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
     
     Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
   }
@@ -67,7 +67,7 @@ class TempController @Inject() (cc: MessagesControllerComponents) extends Messag
     val date = data.map(dt => dt.doy/365.0+dt.year)
     val plot = Plot.stackedNN(Seq(
         ScatterStyle(date, data.map(_.precip), symbolWidth = 3, symbolHeight = 3, colors = BlueARGB, lines = Some(LineData(1, StrokeData(1, Nil))))
-        ), "Precipitation", "Year", "Precipiation (in)").updatedNumericAxis("Main", "x", a => a.copy(tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+        ), "Precipitation", "Year", "Precipiation (in)").updatedNumericAxis("Main", "x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
     
     Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
   }
