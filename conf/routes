@@ -24,4 +24,4 @@ GET		/todo						controllers.HomeController.todo
 
 POST	/temp						controllers.TempController.tempTable
 
-GET		/tempplot					controllers.TempController.tempPlot(month: Int, year: Int)
+POST	/tempplot					controllers.TempController.tempPlot
