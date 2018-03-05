@@ -5,7 +5,7 @@
 console.log("Running wsChat setup.");
 
 // Create WebSocket connection.
-const socket = new WebSocket('ws://localhost:9000/socket');
+const socket = new WebSocket('ws://'+window.location.hostname+':'+window.location.port+'/socket');
 
 // Connection opened
 socket.addEventListener('open', function (event) {
