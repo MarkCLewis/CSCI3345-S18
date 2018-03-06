@@ -34,4 +34,12 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
   
   def todo = TODO
+  
+  def ajaxTest = Action { implicit request =>
+    Ok(views.html.ajaxTest())
+  }
+  
+  def ajaxResponse = Action {
+    Ok("It worked.")
+  }
 }

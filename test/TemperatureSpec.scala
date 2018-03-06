@@ -16,6 +16,7 @@ class TemperatureSpec extends PlaySpec {
     "match month and year" in {
       val td = new TempData("data/SanAntonioTemps.csv")
       val data = td.getMonth(4, 1973)
+      data.isEmpty must be (false)
       data.forall(_.month == 4) must be (true)
       data.forall(_.year == 1973) must be (true)
     }

@@ -33,6 +33,12 @@ GET		/tempplot/temps				controllers.TempController.tempPlot(startMonth: Int, sta
 
 GET		/tempplot/precip			controllers.TempController.precipPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
 
+######### Routes for Ajax ###########
+
+GET		/ajax						controllers.HomeController.ajaxTest
+
+GET		/ajax/req					controllers.HomeController.ajaxResponse
+
 ######### Routes for the WebSocket chatting code ###########
 
 GET		/wschat						controllers.WSChatController.index
