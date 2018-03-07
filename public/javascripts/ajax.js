@@ -6,12 +6,13 @@ console.log("Ajax!");
 
 const request = new XMLHttpRequest();
 
-request.open("GET", "http://localhost:9000/ajax/req");
-
-request.addEventListener("load", (e) => {
+request.onload = (e) => {
+	console.log(this);
 	console.log(e);
 	const div = document.getElementById("ajax");
-	div.innerHTML = e;
-});
+	div.innerHTML = request.responseText;
+};
+
+request.open("GET", "http://localhost:9000/ajax/req");
 
 request.send();

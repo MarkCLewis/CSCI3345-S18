@@ -21,6 +21,13 @@
 	  <input type="submit" value="Submit">
 	}
 	
+	<p>
+		<input type="date" id="ajaxDate">
+		<input type="hidden" id="ajaxURL" value="@{routes.TempController.singleDayInfo("").toString.dropRight(1)}">
+		<button id="getDay">Get Daily Data</button>
+	</p>
+	<p id="dayInfo"></p>
+	
 	@* This is a Twirl comment. We want to add 1 and 2.  *@
 	@defining(1+2) { sum =>
 	  <p>The sum is @sum.</p>
@@ -28,3 +35,5 @@
 	}
 	<p>mlewis@@trinity.edu</p>
 }
+
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/tempAjax.js")"></script>

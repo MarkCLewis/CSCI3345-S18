@@ -33,6 +33,8 @@ GET		/tempplot/temps				controllers.TempController.tempPlot(startMonth: Int, sta
 
 GET		/tempplot/precip			controllers.TempController.precipPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
 
+GET		/temp/$date<\d\d\d\d-\d\d-\d\d>				controllers.TempController.singleDayInfo(date)
+
 ######### Routes for Ajax ###########
 
 GET		/ajax						controllers.HomeController.ajaxTest

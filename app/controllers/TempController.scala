@@ -67,4 +67,11 @@ class TempController @Inject() (cc: MessagesControllerComponents) extends Messag
 
     Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
   }
+  
+  def singleDayInfo(date: String) = Action {
+    val Array(year, month, day) = date.split("-")
+    val odt = td.getDay(month.toInt, day.toInt, year.toInt)
+    Ok(odt.map(dt => s"On $month/$day/$year the high was ${dt.tmax}, the low was ${dt.tmin}, and there were ${dt.precip} inches of precipitation.").
+        getOrElse("No data for that day."))
+  }
 }

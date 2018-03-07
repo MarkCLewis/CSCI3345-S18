@@ -10,6 +10,10 @@ class TempData(filename: String) {
         p(5).toDouble, p(6).toDouble, p(7).toDouble, p(8).toDouble)
   }.toSeq
   
+  def getDay(month: Int, day: Int, year: Int): Option[DailyTemp] = {
+    data.find(dt => dt.month==month && dt.day==day && dt.year==year) 
+  }
+  
   def getMonth(month: Int, year: Int): Seq[DailyTemp] = {
     data.filter(dt => dt.month == month && dt.year == year)
   }
