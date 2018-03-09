@@ -19,6 +19,8 @@ function init() {
 			let date = $("#ajaxDate").val();
 			if(date) {
 				$(e).load($("#ajaxURL").val()+"/"+date);
+			} else {
+				$(e).text("You need to select a date.");
 			}
 		});
 	})
