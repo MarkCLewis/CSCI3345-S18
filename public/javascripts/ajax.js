@@ -2,8 +2,6 @@
  * 
  */
 
-console.log("Ajax!");
-
 const request = new XMLHttpRequest();
 
 request.onload = (e) => {
