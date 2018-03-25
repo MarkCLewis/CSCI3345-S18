@@ -4,7 +4,7 @@
  * two arguments, a `String` for the title of the page and an `Html`
  * object to insert into the body of the page.
  *@
-@(title: String)(content: Html)(implicit request: RequestHeader)
+@(title: String)(content: Html)(implicit request: RequestHeader, flash: Flash = Flash.emptyCookie)
 
 @import views.html.helper.CSRF
 
@@ -22,6 +22,12 @@
     <body data-token='@CSRF.getToken.value'>
         @* And here's where we render the `Html` object containing
          * the page content. *@
+		@if(flash.get("message").nonEmpty) {
+    		<p class="message">@flash.get("message")</p>
+    	}
+		@if(flash.get("error").nonEmpty) {
+    		<p class="error">@flash.get("error")</p>
+    	}
         @content
-    </body>
+    	</body>
 </html>

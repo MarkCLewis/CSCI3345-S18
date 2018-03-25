@@ -46,3 +46,9 @@ GET		/ajax/req					controllers.HomeController.ajaxResponse
 GET		/wschat						controllers.WSChatController.index
 
 GET		/socket						controllers.WSChatController.socket
+
+######### Routes for the Book controller that demos database access #############
+
+GET		/books						controllers.BookController.allBooks
+
+POST	/addBook					controllers.BookController.addBook
