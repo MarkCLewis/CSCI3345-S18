@@ -16,6 +16,12 @@ object BookQueries {
     db.run(books.result)
   }
   
+  def findByISBN(isbn: String, db: Database)(implicit ec: ExecutionContext): Future[Option[Book]] = {
+    db.run {
+      books.filter(_.isbn === isbn).result.headOption
+    }
+  }
+  
   def addBook(nb: NewBook, db: Database)(implicit ec: ExecutionContext): Future[Int] = {
     db.run {
       books += Book(nb.title, nb.isbn, nb.price.doubleValue())
