@@ -52,3 +52,7 @@ GET		/socket						controllers.WSChatController.socket
 GET		/books						controllers.BookController.allBooks
 
 POST	/addBook					controllers.BookController.addBook
+
+######### Demo usage of JSON and a single page app with some AJAX calls ##################
+
+GET		/spa						controllers.SinglePageApp.index
