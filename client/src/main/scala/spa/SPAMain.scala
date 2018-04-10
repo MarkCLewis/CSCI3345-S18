@@ -18,7 +18,7 @@ object SPAMain {
   def main(args: Array[String]): Unit = {
     val originalContent = $("#mainContent").text
     anotherMethod()
-    dom.document.getElementById("scalajsShoutOut").textContent = SharedMessages.itWorks
+    document.getElementById("scalajsShoutOut").textContent = SharedMessages.itWorks
     $("body").append("<p>Added via jQuery in Scala.js.</p>")
     $("#button0").click(() => restoreContents(originalContent))
     $("#button1").click(() => requestButton1Contents())

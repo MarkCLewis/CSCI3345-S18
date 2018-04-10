@@ -13,7 +13,7 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
   
   case class Circle(x: Int, y: Int, r: Int)
 
-  implicit val locationWrites = new Writes[Circle] {
+  implicit val circleWrites = new Writes[Circle] {
     def writes(circle: Circle) = Json.obj(
       "x" -> circle.x,
       "y" -> circle.y,
@@ -36,7 +36,7 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
   }
 
   def button2Call = Action { implicit request =>
-    Ok(s"This is plain text. Count = ${cnt.incrementAndGet()}")
+    Ok(s"This is plain text. Count = ${cnt.incrementAndGet()}. Message is ${spa.SharedMessages.itWorks}")
   }
 
 }
