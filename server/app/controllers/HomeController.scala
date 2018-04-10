@@ -2,8 +2,8 @@ package controllers
 
 import javax.inject._
 import play.api.mvc._
-import swiftvis2.plotting.renderer.SVGRenderer
-import swiftvis2.plotting.Plot
+//import swiftvis2.plotting.renderer.SVGRenderer
+//import swiftvis2.plotting.Plot
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -24,9 +24,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   
   def plot = Action {
-	  val plot = Plot.scatterPlot(1 to 10, (1 to 10).map(i => i*i), "Plot", "X", "Y")
+//	  val plot = Plot.scatterPlot(1 to 10, (1 to 10).map(i => i*i), "Plot", "X", "Y")
     
-    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
+//    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
+    Ok("Commented out to remove SwiftVis2 dependency.")
   }
   
   def phone(phoneNumber: String) = Action {

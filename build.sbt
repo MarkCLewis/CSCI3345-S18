@@ -1,8 +1,8 @@
-name := """CSCI3345-S18-Play-InClass"""
 version := "1.0-SNAPSHOT"
 
 // Server sub-project - this is where the Play stuff is
 lazy val server = (project in file("server")).settings(commonSettings).settings(
+  name := "CSCI3345-S18-server",
   scalaJSProjects := Seq(client),
   pipelineStages in Assets := Seq(scalaJSPipeline),
   pipelineStages := Seq(digest, gzip),
@@ -12,7 +12,7 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
     "com.vmunier" %% "scalajs-scripts" % "1.1.2",
     guice,
     "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
-    "edu.trinity" %% "swiftvis2" % "0.1.0-SNAPSHOT",
+//    "edu.trinity" %% "swiftvis2" % "0.1.0-SNAPSHOT",
 
     "com.typesafe.play" %% "play-json" % "2.6.9",
 
@@ -27,15 +27,18 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
 
 // Client sub-project - this is where the Scala.js stuff is
 lazy val client = (project in file("client")).settings(commonSettings).settings(
+  name := "CSCI3345-S18-client",
   scalaJSUseMainModuleInitializer := true,
   libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.5"
+    "org.scala-js" %%% "scalajs-dom" % "0.9.5",
+    "org.querki" %%% "jquery-facade" % "1.2"
   )
 ).enablePlugins(ScalaJSPlugin, ScalaJSWeb).
   dependsOn(sharedJs)
 
 // Shared subproject - this is where you put anything for both server and client
-lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared")).settings(commonSettings)
+lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared")).settings(commonSettings,
+  name := "CSCI3345-S18-shared")
 lazy val sharedJvm = shared.jvm
 lazy val sharedJs = shared.js
 

@@ -3,6 +3,7 @@
 
 @main("Single Page Application") {
 	<h1 id="header">First Page</h1>
+	<p id="scalajsShoutOut"></p>
 	<div id="mainContent">
 	<p>
 		This is intended to demonstrate a single page application. In this type of application, there is
@@ -11,6 +12,11 @@
 	</p>
 	</div>
 	<div id="controls">
-		
+		<input type="button" id="button0" value="Restore">
+		<input type="button" id="button1" value="Button 1">
+		<input type="button" id="button2" value="Button 2">
 	</div>
+	<input type="hidden" id="route1" value="@routes.SinglePageApp.button1Call">
+	<input type="hidden" id="route2" value="@routes.SinglePageApp.button2Call">
+	@scalajs.html.scripts("CSCI3345-S18-client", routes.Assets.versioned(_).toString, name => getClass.getResource(s"/public/$name") != null)
 }

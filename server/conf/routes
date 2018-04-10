@@ -56,3 +56,8 @@ POST	/addBook					controllers.BookController.addBook
 ######### Demo usage of JSON and a single page app with some AJAX calls ##################
 
 GET		/spa						controllers.SinglePageApp.index
+
+GET		/spa/button1				controllers.SinglePageApp.button1Call
+
+GET		/spa/button2				controllers.SinglePageApp.button2Call
+

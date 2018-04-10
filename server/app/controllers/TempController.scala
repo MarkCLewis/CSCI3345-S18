@@ -7,11 +7,11 @@ import play.api.data.Forms.mapping
 import play.api.data.Forms.number
 import play.api.mvc.MessagesAbstractController
 import play.api.mvc.MessagesControllerComponents
-import swiftvis2.plotting._
-import swiftvis2.plotting.renderer.SVGRenderer
-import swiftvis2.plotting.styles.ScatterStyle
-import swiftvis2.plotting.styles.ScatterStyle.LineData
-import swiftvis2.plotting.renderer.Renderer.StrokeData
+//import swiftvis2.plotting._
+//import swiftvis2.plotting.renderer.SVGRenderer
+//import swiftvis2.plotting.styles.ScatterStyle
+//import swiftvis2.plotting.styles.ScatterStyle.LineData
+//import swiftvis2.plotting.renderer.Renderer.StrokeData
 
 case class TempRange(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int)
 
@@ -51,23 +51,25 @@ class TempController @Inject() (cc: MessagesControllerComponents) extends Messag
   def tempPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int) = Action {
     val data = td.getRange(startMonth, startYear, endMonth, endYear)
     val date = data.map(dt => dt.doy / 365.0 + dt.year)
-    val plot = Plot.stackedNN(Seq(
-      ScatterStyle(date, data.map(_.tmax), symbolWidth = 3, symbolHeight = 3, colors = RedARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
-      ScatterStyle(date, data.map(_.tave), symbolWidth = 3, symbolHeight = 3, colors = BlackARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
-      ScatterStyle(date, data.map(_.tmin), symbolWidth = 3, symbolHeight = 3, colors = GreenARGB, lines = Some(LineData(1, StrokeData(1, Nil))))), "Temperatures", "Year", "Temp (F)").
-      updatedAxis[NumericAxis]("x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
-
-    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
+//    val plot = Plot.stackedNN(Seq(
+//      ScatterStyle(date, data.map(_.tmax), symbolWidth = 3, symbolHeight = 3, colors = RedARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
+//      ScatterStyle(date, data.map(_.tave), symbolWidth = 3, symbolHeight = 3, colors = BlackARGB, lines = Some(LineData(1, StrokeData(1, Nil)))),
+//      ScatterStyle(date, data.map(_.tmin), symbolWidth = 3, symbolHeight = 3, colors = GreenARGB, lines = Some(LineData(1, StrokeData(1, Nil))))), "Temperatures", "Year", "Temp (F)").
+//      updatedAxis[NumericAxis]("x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+//
+//    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
+    Ok("Commented out so you don't need SwiftVis.")
   }
 
   def precipPlot(startMonth: Int, startYear: Int, endMonth: Int, endYear: Int) = Action {
     val data = td.getRange(startMonth, startYear, endMonth, endYear)
     val date = data.map(dt => dt.doy / 365.0 + dt.year)
-    val plot = Plot.stackedNN(Seq(
-      ScatterStyle(date, data.map(_.precip), symbolWidth = 3, symbolHeight = 3, colors = BlueARGB, lines = Some(LineData(1, StrokeData(1, Nil))))), "Precipitation", "Year", "Precipiation (in)").
-      updatedAxis[NumericAxis]("x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
-
-    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
+//    val plot = Plot.stackedNN(Seq(
+//      ScatterStyle(date, data.map(_.precip), symbolWidth = 3, symbolHeight = 3, colors = BlueARGB, lines = Some(LineData(1, StrokeData(1, Nil))))), "Precipitation", "Year", "Precipiation (in)").
+//      updatedAxis[NumericAxis]("x", a => a.copy(tickSpacing = Some(1.0), tickLabelInfo = a.tickLabelInfo.map(_.copy(numberFormat = "%1.0f"))))
+//
+//    Ok(SVGRenderer.stringValue(plot, 800, 600)).as("image/svg+xml")
+    Ok("Commented out so you don't need SwiftVis.")
   }
   
   def singleDayInfo(date: String) = Action {
