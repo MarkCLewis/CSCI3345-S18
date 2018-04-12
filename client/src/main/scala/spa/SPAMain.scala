@@ -6,7 +6,9 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 import org.querki.jquery._
 import scala.scalajs.js.JSON
 import scala.scalajs.js
+import scala.scalajs.js.annotation.JSGlobal
 
+@JSGlobal
 @js.native
 class Circle(
     var x: Int,
@@ -63,6 +65,6 @@ object SPAMain {
     val c = js.Dynamic.literal(x = x, y = y, radius = rad)
     val route = $("#setCircleRoute").value().toString
     println("Sending "+JSON.stringify(c)+" to "+route)
-    $.ajax(route, js.Dynamic.literal(data = c, contentType = "application/json; charset=utf-8", method = "POST").asInstanceOf[JQueryAjaxSettings])
+    $.ajax(route, js.Dynamic.literal(data = JSON.stringify(c), contentType = "application/json", `type` = "POST", dataType = "json").asInstanceOf[JQueryAjaxSettings])
   }
 }

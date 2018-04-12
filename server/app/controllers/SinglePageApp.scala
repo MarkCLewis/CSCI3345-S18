@@ -52,8 +52,8 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
 
   def setCircle = Action(parse.json) { implicit request =>
     println(request.body)
-//    val c = Json.parse(jsonStr).validate[Circle].get
-//    circle.set(c)
-    Ok("Circle set to ")//+c)
+    val c = request.body.validate[Circle].get
+    circle.set(c)
+    Ok("Circle set to "+c)
   }
 }
