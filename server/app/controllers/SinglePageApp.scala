@@ -1,15 +1,21 @@
 package controllers
 
 import javax.inject._
+import java.util.concurrent.atomic.AtomicInteger
 import play.api.mvc._
 import play.api.libs.json.Writes
 import play.api.libs.json.Json
-import java.util.concurrent.atomic.AtomicInteger
+import play.api.libs.json.Reads
+import play.api.libs.json.JsPath
+import play.api.libs.json.Reads._
+import play.api.libs.functional.syntax._
+import java.util.concurrent.atomic.AtomicReference
 
 @Singleton
 class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractController(cc) {
 
   private val cnt = new AtomicInteger(0)
+  private val circle = new AtomicReference(Circle(4, 5, 6))
   
   case class Circle(x: Int, y: Int, r: Int)
 
@@ -19,6 +25,12 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
       "y" -> circle.y,
       "radius" -> circle.r)
   }
+  
+  implicit val circleReads : Reads[Circle] = (
+    (JsPath \ "x").read[Int] and
+    (JsPath \ "y").read[Int] and
+    (JsPath \ "radius").read[Int]
+  )(Circle.apply _)
 
   /**
    * Create an Action to render an HTML page with a welcome message.
@@ -31,12 +43,17 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
   }
 
   def button1Call = Action { implicit request =>
-    val circle = new Circle(4, 5, 7)
-    Ok(Json.toJson(circle))
+    Ok(Json.toJson(circle.get))
   }
 
   def button2Call = Action { implicit request =>
     Ok(s"This is plain text. Count = ${cnt.incrementAndGet()}. Message is ${spa.SharedMessages.itWorks}")
   }
 
+  def setCircle = Action(parse.json) { implicit request =>
+    println(request.body)
+//    val c = Json.parse(jsonStr).validate[Circle].get
+//    circle.set(c)
+    Ok("Circle set to ")//+c)
+  }
 }

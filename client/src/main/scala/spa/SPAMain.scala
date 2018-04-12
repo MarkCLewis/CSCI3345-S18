@@ -7,11 +7,12 @@ import org.querki.jquery._
 import scala.scalajs.js.JSON
 import scala.scalajs.js
 
-trait Circle extends js.Object {
-  var x: Int
-  var y: Int
-  var radius: Int
-}
+@js.native
+class Circle(
+    var x: Int,
+    var y: Int,
+    var radius: Int
+  ) extends js.Object
 
 object SPAMain {
 
@@ -23,6 +24,7 @@ object SPAMain {
     $("#button0").click(() => restoreContents(originalContent))
     $("#button1").click(() => requestButton1Contents())
     $("#button2").click(() => requestButton2Contents())
+    $("#sendCircle").click(() => sendCircle())
   }
 
   def anotherMethod(): Unit = {
@@ -53,4 +55,14 @@ object SPAMain {
     })
   }
 
+  def sendCircle(): Unit = {
+    val x = $("#xValue").value().toString.toInt
+    val y = $("#yValue").value().toString.toInt
+    val rad = $("#radValue").value().toString.toInt
+    println(s"$x $y $rad")
+    val c = js.Dynamic.literal(x = x, y = y, radius = rad)
+    val route = $("#setCircleRoute").value().toString
+    println("Sending "+JSON.stringify(c)+" to "+route)
+    $.ajax(route, js.Dynamic.literal(data = c, contentType = "application/json; charset=utf-8", method = "POST").asInstanceOf[JQueryAjaxSettings])
+  }
 }
