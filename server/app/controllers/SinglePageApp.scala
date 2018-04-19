@@ -58,6 +58,8 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
   }
   
   def jscanvas = Action { implicit request =>
-    Ok(views.html.canvasElement())
+    Ok(<canvas width="800" height="600" id="spacanvas"/>)
+// If you had something more significant, you could use a view like the following.
+//    Ok(views.html.canvasElement())
   }
 }
