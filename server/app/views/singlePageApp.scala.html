@@ -20,9 +20,12 @@
 		y = <input type="text" id="yValue" value="8">&nbsp;&nbsp;
 		radius = <input type="text" id="radValue" value="5">&nbsp;&nbsp;
 		<input type="button" id="sendCircle" value="Send">
+		<br>
+		<input type="button" id="showCanvas" value="Show Canvas">
 	</div>
 	<input type="hidden" id="route1" value="@routes.SinglePageApp.button1Call">
 	<input type="hidden" id="route2" value="@routes.SinglePageApp.button2Call">
 	<input type="hidden" id="setCircleRoute" value="@routes.SinglePageApp.setCircle">
+	<input type="hidden" id="canvasRoute" value="@routes.SinglePageApp.jscanvas">
 	@scalajs.html.scripts("CSCI3345-S18-client", routes.Assets.versioned(_).toString, name => getClass.getResource(s"/public/$name") != null)
 }

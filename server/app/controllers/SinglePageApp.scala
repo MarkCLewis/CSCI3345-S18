@@ -56,4 +56,8 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
     circle.set(c)
     Ok("Circle set to "+c)
   }
+  
+  def jscanvas = Action { implicit request =>
+    Ok(views.html.canvasElement())
+  }
 }

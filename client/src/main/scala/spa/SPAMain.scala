@@ -1,12 +1,14 @@
 package spa
 
 import org.scalajs.dom
+import org.scalajs.dom.html
 import dom.document
 import scala.scalajs.js.annotation.JSExportTopLevel
 import org.querki.jquery._
-import scala.scalajs.js.JSON
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSGlobal
+import scala.scalajs.js.annotation.JSExport
+import scala.scalajs.js._
 
 @JSGlobal
 @js.native
@@ -18,7 +20,7 @@ class Circle(
 
 object SPAMain {
 
-  def main(args: Array[String]): Unit = {
+  def main(): Unit = {
     val originalContent = $("#mainContent").text
     anotherMethod()
     document.getElementById("scalajsShoutOut").textContent = SharedMessages.itWorks
@@ -27,6 +29,7 @@ object SPAMain {
     $("#button1").click(() => requestButton1Contents())
     $("#button2").click(() => requestButton2Contents())
     $("#sendCircle").click(() => sendCircle())
+    $("#showCanvas").click(() => canvasSetup())
   }
 
   def anotherMethod(): Unit = {
@@ -66,5 +69,15 @@ object SPAMain {
     val route = $("#setCircleRoute").value().toString
     println("Sending "+JSON.stringify(c)+" to "+route)
     $.ajax(route, js.Dynamic.literal(data = JSON.stringify(c), contentType = "application/json", `type` = "POST", dataType = "json").asInstanceOf[JQueryAjaxSettings])
+  }
+  
+  def canvasSetup(): Unit = {
+    val route = $("#canvasRoute").value().toString
+    println("Canvas = "+route)
+    $("#mainContent").load(route, "", { (_: dom.Element, _: String, _: String, _: JQueryXHR) => {
+      val canvas = $("#spacanvas")(0).asInstanceOf[html.Canvas]
+      val gc = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+      gc.fillRect(100, 100, 20, 30)
+    } }: js.ThisFunction3[dom.Element, String, String, JQueryXHR, scala.Any])
   }
 }

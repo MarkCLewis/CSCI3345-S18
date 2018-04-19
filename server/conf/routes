@@ -63,3 +63,5 @@ GET		/spa/button2				controllers.SinglePageApp.button2Call
 
 + nocsrf
 POST	/spa/setCircle				controllers.SinglePageApp.setCircle
+
+GET		/jscanvas					controllers.SinglePageApp.jscanvas
