@@ -1,7 +1,7 @@
 package spa
 
 import org.scalajs.dom
-import org.scalajs.dom.html
+import org.scalajs.dom._
 import dom.document
 import scala.scalajs.js.annotation.JSExportTopLevel
 import org.querki.jquery._
@@ -13,10 +13,9 @@ import scala.scalajs.js._
 @JSGlobal
 @js.native
 class Circle(
-    var x: Int,
-    var y: Int,
-    var radius: Int
-  ) extends js.Object
+  var x: Int,
+  var y: Int,
+  var radius: Int) extends js.Object
 
 object SPAMain {
 
@@ -30,12 +29,13 @@ object SPAMain {
     $("#button2").click(() => requestButton2Contents())
     $("#sendCircle").click(() => sendCircle())
     $("#showCanvas").click(() => canvasSetup())
+    openWebSocket()
   }
 
   def anotherMethod(): Unit = {
     println("Printing stuff.")
   }
-  
+
   def restoreContents(str: String): Unit = {
     $("#mainContent").text(str)
   }
@@ -54,7 +54,7 @@ object SPAMain {
   }
 
   def requestButton2Contents(): Unit = {
-    $.get(route(2), success = { (obj, _, _) => 
+    $.get(route(2), success = { (obj, _, _) =>
       println(obj)
       $("#mainContent").text(obj.toString)
     })
@@ -67,17 +67,37 @@ object SPAMain {
     println(s"$x $y $rad")
     val c = js.Dynamic.literal(x = x, y = y, radius = rad)
     val route = $("#setCircleRoute").value().toString
-    println("Sending "+JSON.stringify(c)+" to "+route)
+    println("Sending " + JSON.stringify(c) + " to " + route)
     $.ajax(route, js.Dynamic.literal(data = JSON.stringify(c), contentType = "application/json", `type` = "POST", dataType = "json").asInstanceOf[JQueryAjaxSettings])
   }
-  
+
   def canvasSetup(): Unit = {
     val route = $("#canvasRoute").value().toString
-    println("Canvas = "+route)
-    $("#mainContent").load(route, "", { (_: dom.Element, _: String, _: String, _: JQueryXHR) => {
-      val canvas = $("#spacanvas")(0).asInstanceOf[html.Canvas]
-      val gc = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
-      gc.fillRect(100, 100, 20, 30)
-    } }: js.ThisFunction3[dom.Element, String, String, JQueryXHR, scala.Any])
+    println("Canvas = " + route)
+    $("#mainContent").load(route, "", { (_: dom.Element, _: String, _: String, _: JQueryXHR) =>
+      {
+        val canvas = $("#spacanvas")(0).asInstanceOf[html.Canvas]
+        val gc = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
+        gc.fillRect(100, 100, 20, 30)
+      }
+    }: js.ThisFunction3[dom.Element, String, String, JQueryXHR, scala.Any])
+  }
+
+  def openWebSocket(): Unit = {
+    val wsRoute = $("#wsRoute").value().toString
+    val socket = new WebSocket(wsRoute)
+    socket.addEventListener("open", (event: Event) => println("Socket open"))
+    socket.addEventListener("message", (event: MessageEvent) => {
+      val newP = $(s"<p>${event.data}</p>")
+      $("#messages").prepend(newP)
+    })
+
+    val textInput = $("#input")
+    textInput.keyup({ (event: JQueryEventObject) => {
+      if (event.which == 13) {
+        socket.send(textInput.value.toString)
+        textInput.value("")
+      }
+    }})
   }
 }

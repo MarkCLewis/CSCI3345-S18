@@ -23,9 +23,13 @@
 		<br>
 		<input type="button" id="showCanvas" value="Show Canvas">
 	</div>
+	<input type="text" id="input"></input>
+    <div id="messages"></div>
+	
 	<input type="hidden" id="route1" value="@routes.SinglePageApp.button1Call">
 	<input type="hidden" id="route2" value="@routes.SinglePageApp.button2Call">
 	<input type="hidden" id="setCircleRoute" value="@routes.SinglePageApp.setCircle">
 	<input type="hidden" id="canvasRoute" value="@routes.SinglePageApp.jscanvas">
+	<input type="hidden" id="wsRoute" value="@routes.WSChatController.socket().webSocketURL()">
 	@scalajs.html.scripts("CSCI3345-S18-client", routes.Assets.versioned(_).toString, name => getClass.getResource(s"/public/$name") != null)
 }
