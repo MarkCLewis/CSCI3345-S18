@@ -1,6 +1,6 @@
 package models
 
-object Tables extends {
+object Tables {
   val profile = slick.jdbc.MySQLProfile
   import profile.api._
   
