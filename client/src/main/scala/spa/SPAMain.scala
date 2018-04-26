@@ -10,12 +10,21 @@ import scala.scalajs.js.annotation.JSGlobal
 import scala.scalajs.js.annotation.JSExport
 import scala.scalajs.js._
 
-@JSGlobal
+@js.native
+trait MyShape extends js.Object
+
 @js.native
 class Circle(
   var x: Int,
   var y: Int,
-  var radius: Int) extends js.Object
+  var radius: Int) extends js.Object with MyShape
+
+@js.native
+class Rectangle(
+  var x: Int,
+  var y: Int,
+  var width: Int,
+  var height: Int) extends js.Object with MyShape
 
 object SPAMain {
 
@@ -47,9 +56,15 @@ object SPAMain {
   def requestButton1Contents(): Unit = {
     println("Button 1 clicked.")
     $.get(route(1), success = { (obj, _, _) =>
-      val circle = obj.asInstanceOf[Circle]
-      println(circle.x, circle.y, circle.radius)
-      $("#mainContent").text(s"""Got a circle as JSON at (${circle.x}, ${circle.y}) with radius ${circle.radius}""")
+      println(JSON.stringify(obj))
+      val circles = obj.asInstanceOf[Array[MyShape]]
+      if(circles.head.hasOwnProperty("radius")) {
+        val circle = circles.head.asInstanceOf[Circle]
+        println(circle.x, circle.y, circle.radius)
+        $("#mainContent").text(s"""Got a circle as JSON at (${circle.x}, ${circle.y}) with radius ${circle.radius}""")
+      } else {
+        println("Not a circle")
+      }
     })
   }
 
