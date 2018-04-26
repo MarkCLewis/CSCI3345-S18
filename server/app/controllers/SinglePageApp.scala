@@ -52,10 +52,9 @@ class SinglePageApp @Inject() (cc: ControllerComponents) extends AbstractControl
       case c: Circle => circleWrites.writes(c)
       case r: Rectangle => rectangleWrites.writes(r)
     }
-
   }
 
-  implicit val shapeReads: Reads[MyShape] = circleReads.or(rectangleReads)
+  implicit val shapeReads: Reads[MyShape] = circleReads or rectangleReads
 
   /**
    * Create an Action to render an HTML page with a welcome message.
